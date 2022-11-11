@@ -72,9 +72,7 @@ export class MascotaController {
   ): Promise<Mascota[]> {
     return this.mascotaRepository.find(filter);
   }
-  
-  @authenticate("admin")
-  @authenticate("asesor")
+
   @patch('/mascotas')
   @response(200, {
     description: 'Mascota PATCH success count',
