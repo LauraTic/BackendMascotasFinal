@@ -17,6 +17,8 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import fetch from 'node-fetch';
+import {Llaves} from '../config/Llaves';
 import {Prospecto, Usuario} from '../models';
 import {ProspectoRepository} from '../repositories';
 
@@ -45,8 +47,19 @@ export class ProspectoController {
     prospecto: Omit<Prospecto, 'id'>,
   ): Promise<Prospecto> {
 
-    
-    return this.prospectoRepository.create(prospecto);
+    let p = await this.prospectoRepository.create(prospecto);
+
+
+    let destino = Llaves.correoAdministrador;
+    let asunto = 'Nuevo comentario en contáctenos';
+    let mensaje = `Hola administrador. Hubo un nuevo comentario de ${prospecto.nombre}, el correo de esta persona es ${prospecto.correo} y su comentario fue: ${prospecto.comentario}`
+
+    //fetch(`${Llaves.urlServicioNotificaciones}/correo?correo_destino=${destino}&asunto=${asunto}&cuerpo_correo=${mensaje}`)
+    fetch(`${Llaves.urlServicioNotificaciones}/correo?correo_destino=${destino}&asunto=${asunto}&cuerpo_correo=${mensaje}`)
+      .then((data: any) => {
+        console.log(data);
+      })
+      return p;
   }
 
   @get('/prospectos/count')
