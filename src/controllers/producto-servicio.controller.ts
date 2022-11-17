@@ -20,7 +20,7 @@ import {
 } from '@loopback/rest';
 import {ProductoServicio} from '../models';
 import {ProductoServicioRepository} from '../repositories';
-@authenticate("asesor")
+
 export class ProductoServicioController {
   constructor(
     @repository(ProductoServicioRepository)
